@@ -10,7 +10,15 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local
+
+# Local environment files (ignore)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Production environment file (keep for deployment)
+# .env.production
 
 # Editor directories and files
 .vscode/*
@@ -22,4 +30,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.env
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
