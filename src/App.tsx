@@ -1,105 +1,51 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { LanguageProvider } from './contexts/LanguageContext';
-import { AuthProvider } from './contexts/AuthContext';
-import { BookingProvider } from './contexts/BookingContext';
-import { FavoritesProvider } from './contexts/FavoritesContext';
-import { ReviewsProvider } from './contexts/ReviewsContext';
-import { ToastProvider } from './components/Toast';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import CatalogPage from './pages/CatalogPage';
-import EquipmentDetailPage from './pages/EquipmentDetailPage';
-import BookingPage from './pages/BookingPage';
-import AccountPage from './pages/AccountPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ContactPage from './pages/ContactPage';
-import AdminDashboard from './pages/AdminDashboard';
-import BookingConfirmationPage from './pages/BookingConfirmationPage';
-import FavoritesPage from './pages/FavoritesPage';
-import ProtectedRoute from './components/ProtectedRoute';
-
-// Создание QueryClient для React Query
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 минут
-      gcTime: 10 * 60 * 1000, // 10 минут
-      retry: (failureCount, error: any) => {
-        // Не повторять для 4xx ошибок
-        if (error?.status >= 400 && error?.status < 500) {
-          return false;
-        }
-        return failureCount < 3;
-      },
-    },
-  },
-});
-
-// Loading компонент
-const LoadingSpinner = () => (
-  <div className="flex justify-center items-center h-64">
-    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-  </div>
-);
-
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <LanguageProvider>
-          <AuthProvider>
-            <BookingProvider>
-              <FavoritesProvider>
-                <ReviewsProvider>
-                  <Router>
-                    <div className="min-h-screen bg-white">
-                      <Header />
-                      <main>
-                        <Suspense fallback={<LoadingSpinner />}>
-                          <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/catalog" element={<CatalogPage />} />
-                            <Route path="/equipment/:id" element={<EquipmentDetailPage />} />
-                            <Route path="/booking/:id" element={<BookingPage />} />
-                            <Route path="/booking-confirmation" element={<BookingConfirmationPage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/register" element={<RegisterPage />} />
-                            <Route path="/contact" element={<ContactPage />} />
-                            <Route path="/favorites" element={<FavoritesPage />} />
-                            <Route 
-                              path="/account" 
-                              element={
-                                <ProtectedRoute>
-                                  <AccountPage />
-                                </ProtectedRoute>
-                              } 
-                            />
-                            <Route 
-                              path="/admin" 
-                              element={
-                                <ProtectedRoute adminOnly>
-                                  <AdminDashboard />
-                                </ProtectedRoute>
-                              } 
-                            />
-                          </Routes>
-                        </Suspense>
-                      </main>
-                      <Footer />
-                    </div>
-                  </Router>
-                </ReviewsProvider>
-              </FavoritesProvider>
-            </BookingProvider>
-          </AuthProvider>
-        </LanguageProvider>
-      </ToastProvider>
-    </QueryClientProvider>
-  );
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col items-center justify-center p-4">
+      <div className="text-center max-w-md mx-auto">
+        {/* Logo */}
+        <div className="mb-8">
+          <div className="w-24 h-24 mx-auto bg-white rounded-3xl flex items-center justify-center shadow-xl border border-slate-100">
+            {/* Минималистичный логотип RentBox - стилизованная коробка */}
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="16" width="32" height="24" rx="2" stroke="black" strokeWidth="4"/>
+              <path d="M8 16L24 8L40 16" stroke="black" strokeWidth="4" strokeLinejoin="round"/>
+              <line x1="24" y1="8" x2="24" y2="40" stroke="black" strokeWidth="4"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* Brand */}
+        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-3 tracking-tight">
+          RentBox
+        </h1>
+
+        {/* Tagline */}
+        <p className="text-lg text-slate-500 mb-10">
+          Аренда оборудования
+        </p>
+
+        {/* Coming Soon Badge */}
+        <div className="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg border border-slate-100 mb-12">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+          </span>
+          <span className="text-slate-700 font-medium">Скоро открытие</span>
+        </div>
+
+        {/* Contact */}
+        <div className="space-y-2 text-slate-400">
+          <p>info@rentbox.az</p>
+          <p className="text-slate-600 font-medium">+994 55 766 14 06</p>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="absolute bottom-6 text-slate-300 text-sm">
+        © 2025 RentBox · Баку
+      </div>
+    </div>
+  )
 }
 
-export default App;
+export default App
